@@ -4,11 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Comment extends Model
+class Contact extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $keyType = 'string';
+
+    protected $dates = ['deleted_at'];
 
     public $incrementing = false;
 
@@ -20,13 +25,8 @@ class Comment extends Model
         });
     }
 
-    public function commentable()
+    public function contactable()
     {
         return $this->morphTo();
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'author', 'id');
     }
 }

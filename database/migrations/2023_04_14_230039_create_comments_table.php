@@ -21,7 +21,11 @@ return new class extends Migration
 
             $table->text('body');
             $table->dateTime('comment_date');
-            $table->timestamps();
+
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
+
+            $table->nullableTimestamps();
             $table->softDeletes();
         });
     }

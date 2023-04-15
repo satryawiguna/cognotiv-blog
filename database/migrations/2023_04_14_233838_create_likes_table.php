@@ -21,7 +21,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('restrict');
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 
