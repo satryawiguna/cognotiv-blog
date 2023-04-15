@@ -15,7 +15,11 @@ return new class extends Migration
 
             $table->string('nick_name')->nullable();
             $table->string('full_name')->nullable();
-            $table->timestamps();
+
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
+
+            $table->nullableTimestamps();
             $table->softDeletes();
         });
     }

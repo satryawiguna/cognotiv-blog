@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('blog_category_id');
-            $table->foreign('blog_category_id')
+            $table->unsignedBigInteger('category');
+            $table->foreign('category')
                 ->references('id')
                 ->on('blog_categories')
                 ->onDelete('restrict');
@@ -28,7 +28,11 @@ return new class extends Migration
 
             $table->string('title');
             $table->longText('content');
-            $table->timestamps();
+
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
+
+            $table->nullableTimestamps();
             $table->softDeletes();
 
         });
