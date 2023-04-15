@@ -21,7 +21,7 @@ Route::post('/register', [UserController::class, "register"])->name('api.registe
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [AuthController::class, "login"])->name('api.auth.login');
 
-    Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/logout', [AuthController::class, "logout"])->name('api.auth.logout');
     });
 });

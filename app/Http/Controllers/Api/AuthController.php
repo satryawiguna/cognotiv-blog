@@ -28,4 +28,15 @@ class AuthController extends ApiBaseController
 
         return $this->getObjectJsonResponse($loginResponse);
     }
+
+    public function logout()
+    {
+        $logoutResponse = $this->_userService->logout();
+
+        if ($logoutResponse->isError()) {
+            return $this->getErrorLatestJsonResponse($logoutResponse);
+        }
+
+        return $this->getSuccessLatestJsonResponse($logoutResponse);
+    }
 }

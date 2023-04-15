@@ -112,9 +112,29 @@ class UserService extends BaseService implements IUserService
 
     }
 
-    public function logout(string $email): BasicResponse
+    public function logout(): BasicResponse
     {
-        // TODO: Implement logout() method.
+        $response = new BasicResponse();
+
+        try {
+            Auth::user()->tokens()->delete();
+
+            $this->setMessageResponse($response,
+                'SUCCESS',
+                HttpResponseType::SUCCESS,
+                'Logout succeed');
+
+            Log::info("Logout succeed");
+        } catch (\Exception $ex) {
+            $this->setMessageResponse($response,
+                'ERROR',
+                HttpResponseType::INTERNAL_SERVER_ERROR,
+                $ex->getMessage());
+
+            Log::error("Invalid logout", [$response->getMessageResponseErrorLatest()]);
+        }
+
+        return $response;
     }
 
 }
