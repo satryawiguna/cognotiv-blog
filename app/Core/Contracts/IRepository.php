@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Contract;
+namespace App\Core\Contracts;
 
-use App\Core\Entity\BaseEntity;
+use App\Core\Entities\BaseEntity;
 use Illuminate\Support\Collection;
 
 interface IRepository

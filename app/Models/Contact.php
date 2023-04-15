@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
+use App\Core\Entities\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Contact extends Model
+class Contact extends BaseEntity
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'full_name',
+        'nick_name',
+        'created_by',
+        'updated_by'
+    ];
 
     protected $keyType = 'string';
 

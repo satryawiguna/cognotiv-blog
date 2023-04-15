@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Response;
+namespace App\Core\Responses;
 
-use App\Enums\MessageType;
+use App\Core\Types\MessageType;
 use Illuminate\Support\Collection;
 
 class BasicResponse

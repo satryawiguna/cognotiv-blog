@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Response;
+namespace App\Core\Responses;
 
 use Illuminate\Support\Collection;
 
