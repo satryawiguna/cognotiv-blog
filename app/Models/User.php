@@ -69,7 +69,7 @@ class User extends BaseAuthEntity implements MustVerifyEmail
 
     public function role()
     {
-        return $this->belongsTo(User::class, 'role_id', 'id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
     public function contact()

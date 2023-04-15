@@ -69,7 +69,47 @@ class UserService extends BaseService implements IUserService
 
     public function login(LoginRequest $request): GenericObjectResponse
     {
-        // TODO: Implement login() method.
+        $response = new GenericObjectResponse();
+
+        try {
+            $identity = (filter_var($request->identity, FILTER_VALIDATE_EMAIL)) ? 'email' : 'username';
+
+            if (!Auth::attempt([$identity => $request->identity, "password" => $request->password])) {
+                throw new InvalidLoginException('Login invalid');
+            }
+
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            $this->setGenericObjectResponse($response,
+                [
+                    'email' => $user->email,
+                    'role' => $user->role->title,
+                    'access_token' => $token,
+                    'token_type' => 'Bearer'
+                ],
+                'SUCCESS',
+                HttpResponseType::SUCCESS);
+
+            Log::info("Login succeed");
+        } catch (InvalidLoginException $ex) {
+            $this->setMessageResponse($response,
+                "ERROR",
+                HttpResponseType::UNAUTHORIZED,
+                $ex->getMessage());
+
+            Log::error("Invalid login", [$response->getMessageResponseErrorLatest()]);
+        } catch (\Exception $ex) {
+            $this->setMessageResponse($response,
+                'ERROR',
+                HttpResponseType::INTERNAL_SERVER_ERROR,
+                $ex->getMessage());
+
+            Log::error("Internal server error", [$response->getMessageResponseError()]);
+        }
+
+        return $response;
+
     }
 
     public function logout(string $email): BasicResponse
