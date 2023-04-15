@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Request;
+namespace App\Core\Requests;
 
 class ListSearchPageDataRequest extends ListSearchDataRequest
 {

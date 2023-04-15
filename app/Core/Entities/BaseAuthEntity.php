@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Entity;
+namespace App\Core\Entities;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;

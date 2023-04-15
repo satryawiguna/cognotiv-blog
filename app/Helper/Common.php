@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-use App\Core\Request\AuditableRequest;
+use App\Core\Requests\AuditableRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 

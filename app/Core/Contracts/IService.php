@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Contract;
+namespace App\Core\Contracts;
 
-use App\Core\Entity\BaseEntity;
-use App\Core\Response\BasicResponse;
-use App\Core\Response\GenericListResponse;
-use App\Core\Response\GenericListSearchPageResponse;
-use App\Core\Response\GenericListSearchResponse;
-use App\Core\Response\GenericObjectResponse;
+use App\Core\Entities\BaseEntity;
+use App\Core\Responses\BasicResponse;
+use App\Core\Responses\GenericListResponse;
+use App\Core\Responses\GenericListSearchPageResponse;
+use App\Core\Responses\GenericListSearchResponse;
+use App\Core\Responses\GenericObjectResponse;
 use Illuminate\Support\Collection;
 
 interface IService
