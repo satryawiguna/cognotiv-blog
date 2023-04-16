@@ -48,6 +48,8 @@ class User extends BaseAuthEntity implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    protected $guarded = ['deleted_at'];
+
     protected $keyType = 'string';
 
     protected $dates = ['deleted_at'];

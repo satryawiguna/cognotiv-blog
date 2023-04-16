@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blog extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Sluggable;
+
+    protected $guarded = ['deleted_at'];
 
     protected $dates = ['deleted_at'];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Requests\User\LoginRequest;
+use App\Http\Resources\Auth\LoginResource;
 use App\Services\Contracts\IUserService;
 
 class AuthController extends ApiBaseController
@@ -26,7 +27,7 @@ class AuthController extends ApiBaseController
             return $this->getErrorLatestJsonResponse($loginResponse);
         }
 
-        return $this->getObjectJsonResponse($loginResponse);
+        return $this->getObjectJsonResponse($loginResponse, LoginResource::class);
     }
 
     public function logout()

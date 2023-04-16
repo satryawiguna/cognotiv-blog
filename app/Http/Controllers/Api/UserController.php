@@ -23,7 +23,7 @@ class UserController extends ApiBaseController
         $registerResponse = $this->_userService->register($request);
 
         if ($registerResponse->isError()) {
-            return $this->getErrorJsonResponse($registerResponse);
+            return $this->getErrorLatestJsonResponse($registerResponse);
         }
 
         return $this->getObjectJsonResponse($registerResponse, RegisterResource::class);
