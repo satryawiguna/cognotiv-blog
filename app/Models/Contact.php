@@ -11,12 +11,9 @@ class Contact extends BaseEntity
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'full_name',
-        'nick_name',
-        'created_by',
-        'updated_by'
-    ];
+    protected $table = 'contacts';
+
+    protected $guarded = ['deleted_at'];
 
     protected $keyType = 'string';
 

@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Core\Entities\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BlogCategory extends Model
+class BlogCategory extends BaseEntity
 {
     use HasFactory, SoftDeletes;
+
+    protected $table = 'blog_categories';
+
+    protected $guarded = ['deleted_at'];
 
     protected $dates = ['deleted_at'];
 

@@ -10,6 +10,8 @@ class Blog extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = ['deleted_at'];
+
     protected $dates = ['deleted_at'];
 
     public function sluggable()

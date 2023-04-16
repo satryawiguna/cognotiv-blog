@@ -4,32 +4,31 @@ namespace App\Repositories;
 
 use App\Core\Contracts\IRepository;
 use App\Core\Entities\BaseEntity;
-use App\Core\Requests\AuditableRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class BaseRepository implements IRepository
 {
-    public BaseEntity $model;
+    protected readonly BaseEntity $_model;
 
     /**
      * @param BaseEntity $model
      */
     public function __construct(BaseEntity $model)
     {
-        $this->model = $model;
+        $this->_model = $model;
     }
 
     public function all(string $order = "id", string $sort = "asc"): Collection
     {
-        return $this->model
+        return $this->_model
             ->orderBy($order, $sort)
             ->get();
     }
 
-    public function findById(int|string $id): BaseEntity|null
+    public function findById(int|string $id): BaseEntity
     {
-        return $this->model->find($id);
+        return $this->_model->find($id);
     }
 
     protected function setAuditableInformationFromRequest(BaseEntity|array $entity, $request)

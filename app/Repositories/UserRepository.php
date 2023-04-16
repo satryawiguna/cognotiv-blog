@@ -10,17 +10,18 @@ use App\Repositories\Contracts\IUserRepository;
 
 class UserRepository extends BaseRepository implements IUserRepository
 {
-    public User $user;
+    private readonly Contact $_contact;
 
-    public function __construct(User $user)
+    public function __construct(User $user, Contact $contact)
     {
         parent::__construct($user);
-        $this->user = $user;
+
+        $this->_contact = $contact;
     }
 
     public function register(RegisterRequest $request): BaseEntity
     {
-        $user = new $this->user([
+        $user = $this->_model->fill([
             "role_id" => 2,
             "username" => $request->username,
             "email" => $request->email,
@@ -32,7 +33,7 @@ class UserRepository extends BaseRepository implements IUserRepository
 
         $user->save();
 
-        $contact = new Contact([
+        $contact = new $this->_contact([
             "full_name" => $request->full_name,
             "nick_name" => $request->nick_name,
         ]);

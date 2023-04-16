@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class Common
 {
+
+    public function __construct()
+    {
+    }
+
     public static function setRuleAuthor(array $rules, AuditableRequest $auditableRequest)
     {
         return array_merge($rules, $auditableRequest->rules());

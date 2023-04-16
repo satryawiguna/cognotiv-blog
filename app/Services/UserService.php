@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Core\Responses\BasicResponse;
 use App\Core\Responses\GenericObjectResponse;
 use App\Core\Types\HttpResponseType;
-use App\Exceptions\InvalidLoginException;
+use App\Exceptions\InvalidLoginAttempException;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Repositories\Contracts\IUserRepository;
@@ -41,7 +41,7 @@ class UserService extends BaseService implements IUserService
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Register success");
+            Log::info("User register was succeed");
 
         } catch (QueryException $ex) {
             DB::rollBack();
@@ -49,9 +49,9 @@ class UserService extends BaseService implements IUserService
             $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::BAD_REQUEST,
-                $ex->getMessage());
+                'Invalid query');
 
-            Log::error("Invalid query", $response->getMessageResponseError());
+            Log::error("Invalid query on " . __FUNCTION__ . "()", [$ex->getMessage()]);
 
         } catch (Exception $ex) {
             DB::rollBack();
@@ -59,9 +59,9 @@ class UserService extends BaseService implements IUserService
             $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
-                $ex->getMessage());
+                'Something went wrong');
 
-            Log::error("Invalid register", $response->getMessageResponseError());
+            Log::error("Something went wrong on " . __FUNCTION__ . "()", [$ex->getMessage()]);
         }
 
         return $response;
@@ -75,7 +75,7 @@ class UserService extends BaseService implements IUserService
             $identity = (filter_var($request->identity, FILTER_VALIDATE_EMAIL)) ? 'email' : 'username';
 
             if (!Auth::attempt([$identity => $request->identity, "password" => $request->password])) {
-                throw new InvalidLoginException('Login invalid');
+                throw new InvalidLoginAttempException('Invalid login attempt');
             }
 
             $user = Auth::user();
@@ -84,32 +84,31 @@ class UserService extends BaseService implements IUserService
             $this->setGenericObjectResponse($response,
                 [
                     'email' => $user->email,
-                    'role' => $user->role->title,
+                    'role' => $user->role,
                     'access_token' => $token,
                     'token_type' => 'Bearer'
                 ],
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Login succeed");
-        } catch (InvalidLoginException $ex) {
+            Log::info("User login was succeed");
+        } catch (InvalidLoginAttempException $ex) {
             $this->setMessageResponse($response,
                 "ERROR",
                 HttpResponseType::UNAUTHORIZED,
-                $ex->getMessage());
+                "Invalid login attempt");
 
-            Log::error("Invalid login", [$response->getMessageResponseErrorLatest()]);
+            Log::error("Invalid login attempt on " . __FUNCTION__ . "()", [$ex->getMessage()]);
         } catch (\Exception $ex) {
             $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
-                $ex->getMessage());
+                'Something went wrong');
 
-            Log::error("Internal server error", [$response->getMessageResponseError()]);
+            Log::error("Something went wrong on " . __FUNCTION__ . "()", [$ex->getMessage()]);
         }
 
         return $response;
-
     }
 
     public function logout(): BasicResponse
@@ -124,14 +123,14 @@ class UserService extends BaseService implements IUserService
                 HttpResponseType::SUCCESS,
                 'Logout succeed');
 
-            Log::info("Logout succeed");
+            Log::info("User logout was succeed");
         } catch (\Exception $ex) {
             $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
-                $ex->getMessage());
+                'Something went wrong');
 
-            Log::error("Invalid logout", [$response->getMessageResponseErrorLatest()]);
+            Log::error("Something went wrong on " . __FUNCTION__ . "()", [$ex->getMessage()]);
         }
 
         return $response;
