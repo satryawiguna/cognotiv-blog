@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Core\Entities\BaseEntity;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogCategory extends BaseEntity
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Sluggable;
 
     protected $table = 'blog_categories';
 
@@ -16,7 +17,7 @@ class BlogCategory extends BaseEntity
 
     protected $dates = ['deleted_at'];
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [

@@ -10,7 +10,8 @@ use App\Http\Requests\Blog\BlogCategoryStoreRequest;
 use App\Http\Requests\Blog\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
 use App\Repositories\Contracts\IBlogCategoryRepository;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepository
@@ -42,7 +43,7 @@ class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepo
             ->get();
     }
 
-    public function allSearchPageBlogCategories(ListSearchPageDataRequest $request): Paginator
+    public function allSearchPageBlogCategories(ListSearchPageDataRequest $request): LengthAwarePaginator
     {
         $blogCategory = $this->_model;
 
@@ -53,7 +54,7 @@ class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepo
         }
 
         return $blogCategory->orderBy($request->order_by, $request->sort)
-            ->simplePaginate($request->per_page, $request->page);
+            ->paginate($request->per_page, ['*'], 'page', $request->page);
     }
 
     public function findBlogCategoryById(int $id): BaseEntity|null

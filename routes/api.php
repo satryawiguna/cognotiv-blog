@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         });
 
         Route::get('/{id}', [BlogCategoryController::class, "show"])->name('api.blogCategory.show');
-        Route::post('/create', [BlogCategoryController::class, "create"])->name('api.blogCategory.create');
+        Route::post('/create', [BlogCategoryController::class, "store"])->name('api.blogCategory.create');
         Route::put('/update/{id}', [BlogCategoryController::class, "update"])->name('api.blogCategory.update');
         Route::delete('/delete/{id}', [BlogCategoryController::class, "delete"])->name('api.blogCategory.delete');
     });

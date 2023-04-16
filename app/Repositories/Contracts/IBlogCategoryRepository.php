@@ -8,7 +8,8 @@ use App\Core\Requests\ListSearchDataRequest;
 use App\Core\Requests\ListSearchPageDataRequest;
 use App\Http\Requests\Blog\BlogCategoryStoreRequest;
 use App\Http\Requests\Blog\BlogCategoryUpdateRequest;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 interface IBlogCategoryRepository
@@ -17,7 +18,7 @@ interface IBlogCategoryRepository
 
     public function allSearchBlogCategories(ListSearchDataRequest $request): Collection;
 
-    public function allSearchPageBlogCategories(ListSearchPageDataRequest $request): Paginator;
+    public function allSearchPageBlogCategories(ListSearchPageDataRequest $request): LengthAwarePaginator;
 
     public function findBlogCategoryById(int $id): BaseEntity|null;
 

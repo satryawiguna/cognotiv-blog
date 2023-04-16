@@ -101,17 +101,18 @@ class BlogService extends BaseService implements IBlogService
         $response = new GenericListSearchPageResponse();
 
         try {
-            $bolgCategories = $this->_blogCategoryRepository->allSearchPageBlogCategories($request);
+            $blogCategories = $this->_blogCategoryRepository->allSearchPageBlogCategories($request);
 
             $this->setGenericListSearchPageResponse($response,
-                $bolgCategories->getCollection(),
-                $bolgCategories->count(),
-                ["perPage" => $bolgCategories->perPage(), "currentPage" => $bolgCategories->currentPage()],
+                $blogCategories->getCollection(),
+                $blogCategories->count(),
+                ["perPage" => $blogCategories->perPage(), "currentPage" => $blogCategories->currentPage()],
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
             Log::info("Fetch all by search page blog category was succeed");
         } catch (QueryException $ex) {
+            dd($ex->getMessage());
             $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::BAD_REQUEST,
@@ -191,6 +192,7 @@ class BlogService extends BaseService implements IBlogService
 
             Log::info("Create blog category was succeed");
         } catch (QueryException $ex) {
+            dd($ex->getMessage());
             DB::rollBack();
 
             $this->setMessageResponse($response,
@@ -230,10 +232,14 @@ class BlogService extends BaseService implements IBlogService
         DB::beginTransaction();
 
         try {
+            if ($id != $request->id) {
+                throw new BadRequestException('Path parameter id: {' . $id . '} was not match with the request');
+            }
+
             $blogCategory = $this->_blogCategoryRepository->findById($id);
 
             if (!$blogCategory) {
-                throw new ModelNotFoundException('Blog category by id: {$id} was not found on ' . __FUNCTION__ . '()');
+                throw new ModelNotFoundException('Blog category by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
             }
 
             $updateBlogCategory = $this->_blogCategoryRepository->updateBlogCategory($request);
@@ -295,7 +301,7 @@ class BlogService extends BaseService implements IBlogService
             $blogCategory = $this->_blogCategoryRepository->findById($id);
 
             if (!$blogCategory) {
-                throw new ModelNotFoundException('Blog category by id: {$id} was not found on ' . __FUNCTION__ . '()');
+                throw new ModelNotFoundException('Blog category by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
             }
 
             $this->_blogCategoryRepository->deleteBlogCategory($id);
@@ -303,9 +309,9 @@ class BlogService extends BaseService implements IBlogService
             $this->setMessageResponse($response,
                 "SUCCESS",
                 HttpResponseType::SUCCESS,
-                'Delete bog category by id: {$id} was succeed');
+                'Delete bog category by id: {' . $id . '} was succeed');
 
-            Log::info('Delete bog category by id: {$id} was succeed');
+            Log::info('Delete bog category by id: {' . $id . '} was succeed');
         } catch (ModelNotFoundException $ex) {
             DB::rollBack();
 
