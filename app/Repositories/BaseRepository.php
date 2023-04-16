@@ -26,7 +26,7 @@ class BaseRepository implements IRepository
             ->get();
     }
 
-    public function findById(int|string $id): BaseEntity
+    public function findById(int|string $id): BaseEntity|null
     {
         return $this->_model->find($id);
     }

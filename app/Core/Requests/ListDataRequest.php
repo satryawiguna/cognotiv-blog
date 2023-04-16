@@ -17,8 +17,7 @@ class ListDataRequest extends FormRequest
         return [
             'order_by' => ['string'],
             'sort' => ['string', 'regex:(ASC|DESC)'],
-            'filter' => ['array'],
-            'filter.*' => ['array']
+            'filter' => ['array']
         ];
     }
 

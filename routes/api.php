@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogCategoryController;
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,5 +40,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/create', [BlogCategoryController::class, "store"])->name('api.blogCategory.create');
         Route::put('/update/{id}', [BlogCategoryController::class, "update"])->name('api.blogCategory.update');
         Route::delete('/delete/{id}', [BlogCategoryController::class, "delete"])->name('api.blogCategory.delete');
+    });
+
+    Route::group(['prefix' => '/blog'], function () {
+        Route::group(['prefix' => '/all'], function () {
+            Route::get('/', [BlogController::class, "all"])->name('api.blog.all');
+            Route::post('/search', [BlogController::class, "allSearch"])->name('api.blog.all.search');
+            Route::post('/search/page', [BlogController::class, "allSearchPage"])->name('api.blog.all.search.page');
+        });
+
+        Route::get('/{id}', [BlogController::class, "show"])->name('api.blog.show');
+        Route::post('/create', [BlogController::class, "store"])->name('api.blog.create');
+        Route::put('/update/{id}', [BlogController::class, "update"])->name('api.blog.update');
+        Route::delete('/delete/{id}', [BlogController::class, "delete"])->name('api.blog.delete');
     });
 });
