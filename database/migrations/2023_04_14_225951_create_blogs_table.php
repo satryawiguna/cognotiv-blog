@@ -24,9 +24,10 @@ return new class extends Migration
                 ->onDelete('restrict');
 
             $table->dateTime('published_date');
-            $table->enum('status', ['published', 'pending', 'draft']);
+            $table->enum('status', ['published', 'pending', 'draft'])->default('draft');
 
             $table->string('title');
+            $table->string('slug')->unique();
             $table->longText('content');
 
             $table->string('created_by');

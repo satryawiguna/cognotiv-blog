@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Core\Entities\BaseEntity;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Blog extends Model
+class Blog extends BaseEntity
 {
     use HasFactory, SoftDeletes, Sluggable;
 

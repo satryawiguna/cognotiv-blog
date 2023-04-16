@@ -78,7 +78,7 @@ class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepo
         $blogCategory = $this->_model->find($request->id);
 
         if (!$blogCategory) {
-            return $blogCategory;
+            return null;
         }
 
         $this->setAuditableInformationFromRequest($blogCategory, $request);
@@ -97,7 +97,7 @@ class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepo
         $blogCategory = $this->_model->find($id);
 
         if (!$blogCategory) {
-            return $blogCategory;
+            return null;
         }
 
         $blogCategory->delete();

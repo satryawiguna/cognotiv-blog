@@ -6,7 +6,7 @@ use App\Core\Requests\AuditableRequest;
 use App\Helper\Common;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlogCategoryUpdateRequest extends FormRequest
+class BlogUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,8 +17,12 @@ class BlogCategoryUpdateRequest extends FormRequest
     {
         $rules = [
             'id' => ['required', 'integer'],
+            'category' => ['required'],
+            'author' => ['required', 'string'],
+            'published_date' => ['required', 'string'],
+            'status' => ['required', 'string'],
             'title' => ['required', 'string'],
-            'slug' => []
+            'content' => ['required', 'string']
         ];
 
         return Common::setRuleAuthor($rules, new AuditableRequest());
