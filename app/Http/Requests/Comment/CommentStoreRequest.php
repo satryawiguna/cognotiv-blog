@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Blog;
+namespace App\Http\Requests\Comment;
 
 use App\Core\Requests\AuditableRequest;
 use App\Helper\Common;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlogStoreRequest extends FormRequest
+class CommentStoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,12 +16,11 @@ class BlogStoreRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'category' => ['required'],
+            'commentable_type' => ['string'],
+            'commentable_id' => ['required', 'integer'],
             'author' => ['required', 'string'],
-            'published_date' => ['sometimes', 'required', 'date'],
-            'status' => ['required', 'string'],
-            'title' => ['required', 'string'],
-            'content' => ['required', 'string']
+            'body' => ['required', 'string'],
+            'comment_date' => ['sometimes', 'required', 'date']
         ];
 
         return Common::setRuleAuthor($rules, new AuditableRequest());

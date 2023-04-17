@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,6 +13,7 @@ return new class extends Migration
             $table->id();
 
             $table->morphs('commentable');
+            $table->dateTime('comment_date')->default(Carbon::now());
 
             $table->uuid('author');
             $table->foreign('author')
@@ -20,7 +22,6 @@ return new class extends Migration
                 ->onDelete('restrict');
 
             $table->text('body');
-            $table->dateTime('comment_date');
 
             $table->string('created_by');
             $table->string('updated_by')->nullable();

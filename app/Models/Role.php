@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use App\Core\Entities\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class Role extends BaseEntity
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = ['deleted_at'];
+    protected $table = 'roles';
+
+    protected $guarded = ['deleted_at', 'request_by'];
 
     protected $dates = ['deleted_at'];
 

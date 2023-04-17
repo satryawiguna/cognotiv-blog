@@ -6,12 +6,11 @@ use App\Core\Entities\BaseEntity;
 use App\Core\Requests\ListDataRequest;
 use App\Core\Requests\ListSearchDataRequest;
 use App\Core\Requests\ListSearchPageDataRequest;
-use App\Http\Requests\Blog\BlogCategoryStoreRequest;
-use App\Http\Requests\Blog\BlogCategoryUpdateRequest;
+use App\Http\Requests\BlogCategory\BlogCategoryStoreRequest;
+use App\Http\Requests\BlogCategory\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
 use App\Repositories\Contracts\IBlogCategoryRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepository
@@ -65,9 +64,9 @@ class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepo
     public function createBlogCategory(BlogCategoryStoreRequest $request): BaseEntity
     {
         $blogCategory = $this->_model->fill($request->all());
-
+dd($blogCategory);
         $this->setAuditableInformationFromRequest($blogCategory, $request);
-
+dd($blogCategory);
         $blogCategory->save();
 
         return $blogCategory->fresh();

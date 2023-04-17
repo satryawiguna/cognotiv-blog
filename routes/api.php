@@ -3,8 +3,8 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogCategoryController;
 use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +47,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/', [BlogController::class, "all"])->name('api.blog.all');
             Route::post('/search', [BlogController::class, "allSearch"])->name('api.blog.all.search');
             Route::post('/search/page', [BlogController::class, "allSearchPage"])->name('api.blog.all.search.page');
+        });
+
+        Route::group(['prefix' => '/comment'], function () {
+            Route::post('/create', [CommentController::class, "store"])->name('api.blog.comment.create');
+            Route::put('/update/{id}', [CommentController::class, "update"])->name('api.blog.comment.update');
+            Route::delete('/delete/{id}', [CommentController::class, "delete"])->name('api.blog.comment.delete');
         });
 
         Route::get('/{id}', [BlogController::class, "show"])->name('api.blog.show');

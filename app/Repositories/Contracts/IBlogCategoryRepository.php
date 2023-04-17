@@ -6,10 +6,9 @@ use App\Core\Entities\BaseEntity;
 use App\Core\Requests\ListDataRequest;
 use App\Core\Requests\ListSearchDataRequest;
 use App\Core\Requests\ListSearchPageDataRequest;
-use App\Http\Requests\Blog\BlogCategoryStoreRequest;
-use App\Http\Requests\Blog\BlogCategoryUpdateRequest;
+use App\Http\Requests\BlogCategory\BlogCategoryStoreRequest;
+use App\Http\Requests\BlogCategory\BlogCategoryUpdateRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 interface IBlogCategoryRepository

@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Blog;
 
+use App\Http\Resources\Comment\CommentResource;
+use App\Http\Resources\Comment\CommentResourceCollection;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,7 +17,7 @@ class BlogResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $resource = [
+        $blog = [
             'id' => $this->id,
             'category' => $this->blogCategory->title,
             'author' => $this->user->contact->nick_name,
@@ -26,6 +28,12 @@ class BlogResource extends JsonResource
             'content' => $this->content
         ];
 
-        return $resource;
+        if (is_array($request->relations) && count($request->relations) > 0) {
+            if (in_array('comments', $request->relations)) {
+                $blog['comments'] = new CommentResourceCollection($this->comments);
+            }
+        }
+
+        return $blog;
     }
 }

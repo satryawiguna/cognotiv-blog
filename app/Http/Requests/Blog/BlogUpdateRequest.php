@@ -19,7 +19,7 @@ class BlogUpdateRequest extends FormRequest
             'id' => ['required', 'integer'],
             'category' => ['required'],
             'author' => ['required', 'string'],
-            'published_date' => ['required', 'string'],
+            'published_date' => ['sometimes', 'required', 'date'],
             'status' => ['required', 'string'],
             'title' => ['required', 'string'],
             'content' => ['required', 'string']

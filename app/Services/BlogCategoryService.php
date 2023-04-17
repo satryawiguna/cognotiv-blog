@@ -11,10 +11,10 @@ use App\Core\Responses\GenericListSearchPageResponse;
 use App\Core\Responses\GenericListSearchResponse;
 use App\Core\Responses\GenericObjectResponse;
 use App\Core\Types\HttpResponseType;
-use App\Http\Requests\Blog\BlogStoreRequest;
-use App\Http\Requests\Blog\BlogUpdateRequest;
-use App\Repositories\Contracts\IBlogRepository;
-use App\Services\Contracts\IBlogService;
+use App\Http\Requests\BlogCategory\BlogCategoryStoreRequest;
+use App\Http\Requests\BlogCategory\BlogCategoryUpdateRequest;
+use App\Repositories\Contracts\IBlogCategoryRepository;
+use App\Services\Contracts\IBlogCategoryService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -22,28 +22,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class BlogService extends BaseService implements IBlogService
+class BlogCategoryService extends BaseService implements IBlogCategoryService
 {
-    private readonly IBlogRepository $_blogRepository;
+    private readonly IBlogCategoryRepository $_blogCategoryRepository;
 
-    public function __construct(IBlogRepository $blogRepository)
+    public function __construct(IBlogCategoryRepository $blogCategoryRepository)
     {
-        $this->_blogRepository = $blogRepository;
+        $this->_blogCategoryRepository = $blogCategoryRepository;
     }
 
-    public function getAllBlogs(ListDataRequest $request): GenericListResponse
+    public function getAllBlogCategories(ListDataRequest $request): GenericListResponse
     {
         $response = new GenericListResponse();
 
         try {
-            $bolgs = $this->_blogRepository->allBlogs($request);
+            $bolgCategories = $this->_blogCategoryRepository->allBlogCategories($request);
 
             $this->setGenericListResponse($response,
-                $bolgs,
+                $bolgCategories,
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Fetch all blog was succeed");
+            Log::info("Fetch all blog category was succeed");
         } catch (QueryException $ex) {
             $this->setMessageResponse($response,
                 'ERROR',
@@ -63,20 +63,20 @@ class BlogService extends BaseService implements IBlogService
         return $response;
     }
 
-    public function getAllSearchBlogs(ListSearchDataRequest $request): GenericListSearchResponse
+    public function getAllSearchBlogCategories(ListSearchDataRequest $request): GenericListSearchResponse
     {
         $response = new GenericListSearchResponse();
 
         try {
-            $bolgs = $this->_blogRepository->allSearchBlogs($request);
+            $bolgCategories = $this->_blogCategoryRepository->allSearchBlogCategories($request);
 
             $this->setGenericListSearchResponse($response,
-                $bolgs,
-                $bolgs->count(),
+                $bolgCategories,
+                $bolgCategories->count(),
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Fetch all by search blog was succeed");
+            Log::info("Fetch all by search blog category was succeed");
         } catch (QueryException $ex) {
             $this->setMessageResponse($response,
                 'ERROR',
@@ -96,21 +96,21 @@ class BlogService extends BaseService implements IBlogService
         return $response;
     }
 
-    public function getAllSearchPageBlogs(ListSearchPageDataRequest $request): GenericListSearchPageResponse
+    public function getAllSearchPageBlogCategories(ListSearchPageDataRequest $request): GenericListSearchPageResponse
     {
         $response = new GenericListSearchPageResponse();
 
         try {
-            $blogs = $this->_blogRepository->allSearchPageBlogs($request);
+            $blogCategories = $this->_blogCategoryRepository->allSearchPageBlogCategories($request);
 
             $this->setGenericListSearchPageResponse($response,
-                $blogs->getCollection(),
-                $blogs->count(),
-                ["perPage" => $blogs->perPage(), "currentPage" => $blogs->currentPage()],
+                $blogCategories->getCollection(),
+                $blogCategories->count(),
+                ["perPage" => $blogCategories->perPage(), "currentPage" => $blogCategories->currentPage()],
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Fetch all by search page blog was succeed");
+            Log::info("Fetch all by search page blog category was succeed");
         } catch (QueryException $ex) {
             $this->setMessageResponse($response,
                 'ERROR',
@@ -130,23 +130,23 @@ class BlogService extends BaseService implements IBlogService
         return $response;
     }
 
-    public function getBlog(int $id): GenericObjectResponse
+    public function getBlogCategory(int $id): GenericObjectResponse
     {
         $response = new GenericObjectResponse();
 
         try {
-            $bolg = $this->_blogRepository->findBlogById($id);
+            $bolgCategory = $this->_blogCategoryRepository->findBlogCategoryById($id);
 
-            if (!$bolg) {
-                throw new ModelNotFoundException("Blog by id: {' .  $id . '} was not found on " . __FUNCTION__ . "()");
+            if (!$bolgCategory) {
+                throw new ModelNotFoundException("Blog category by id: {' .  $id . '} was not found on " . __FUNCTION__ . "()");
             }
 
             $this->setGenericObjectResponse($response,
-                $bolg,
+                $bolgCategory,
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Fetch blog was succeed");
+            Log::info("Fetch blog category was succeed");
         } catch (QueryException $ex) {
             $this->setMessageResponse($response,
                 'ERROR',
@@ -173,25 +173,24 @@ class BlogService extends BaseService implements IBlogService
         return $response;
     }
 
-    public function storeBlog(BlogStoreRequest $request): GenericObjectResponse
+    public function storeBlogCategory(BlogCategoryStoreRequest $request): GenericObjectResponse
     {
         $response = new GenericObjectResponse();
 
         try {
             DB::beginTransaction();
 
-            $createBlog = $this->_blogRepository->createBlog($request);
+            $createBlogCategory = $this->_blogCategoryRepository->createBlogCategory($request);
 
             DB::commit();
 
             $response = $this->setGenericObjectResponse($response,
-                $createBlog,
+                $createBlogCategory,
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Create blog was succeed");
+            Log::info("Create blog category was succeed");
         } catch (QueryException $ex) {
-            dd($ex->getMessage());
             DB::rollBack();
 
             $this->setMessageResponse($response,
@@ -224,7 +223,7 @@ class BlogService extends BaseService implements IBlogService
         return $response;
     }
 
-    public function updateBlog(int $id, BlogUpdateRequest $request): GenericObjectResponse
+    public function updateBlogCategory(int $id, BlogCategoryUpdateRequest $request): GenericObjectResponse
     {
         $response = new GenericObjectResponse();
 
@@ -235,22 +234,22 @@ class BlogService extends BaseService implements IBlogService
                 throw new BadRequestException('Path parameter id: {' . $id . '} was not match with the request');
             }
 
-            $blog = $this->_blogRepository->findById($id);
+            $blogCategory = $this->_blogCategoryRepository->findById($id);
 
-            if (!$blog) {
-                throw new ModelNotFoundException('Blog by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
+            if (!$blogCategory) {
+                throw new ModelNotFoundException('Blog category by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
             }
 
-            $updateBlog = $this->_blogRepository->updateBlog($request);
+            $updateBlogCategory = $this->_blogCategoryRepository->updateBlogCategory($request);
 
             DB::commit();
 
             $this->setGenericObjectResponse($response,
-                $updateBlog,
+                $updateBlogCategory,
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
-            Log::info("Update blog was succeed");
+            Log::info("Update blog category was succeed");
         } catch(QueryException $ex) {
             DB::rollBack();
 
@@ -292,25 +291,25 @@ class BlogService extends BaseService implements IBlogService
         return $response;
     }
 
-    public function destroyBlog(string $id): BasicResponse
+    public function destroyBlogCategory(string $id): BasicResponse
     {
         $response = new BasicResponse();
 
         try {
-            $blog = $this->_blogRepository->findById($id);
+            $blogCategory = $this->_blogCategoryRepository->findById($id);
 
-            if (!$blog) {
-                throw new ModelNotFoundException('Blog by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
+            if (!$blogCategory) {
+                throw new ModelNotFoundException('Blog category by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
             }
 
-            $this->_blogRepository->deleteBlog($id);
+            $this->_blogCategoryRepository->deleteBlogCategory($id);
 
             $this->setMessageResponse($response,
                 "SUCCESS",
                 HttpResponseType::SUCCESS,
-                'Delete blog by id: {' . $id . '} was succeed');
+                'Delete blog category by id: {' . $id . '} was succeed');
 
-            Log::info('Delete blog by id: {' . $id . '} was succeed');
+            Log::info('Delete blog category by id: {' . $id . '} was succeed');
         } catch (ModelNotFoundException $ex) {
             DB::rollBack();
 

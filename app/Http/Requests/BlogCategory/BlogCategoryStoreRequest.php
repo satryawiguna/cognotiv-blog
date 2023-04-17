@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Blog;
+namespace App\Http\Requests\BlogCategory;
 
 use App\Core\Requests\AuditableRequest;
 use App\Helper\Common;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlogCategoryUpdateRequest extends FormRequest
+class BlogCategoryStoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,9 +16,7 @@ class BlogCategoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'id' => ['required', 'integer'],
-            'title' => ['required', 'string'],
-            'slug' => []
+            'title' => ['required', 'string']
         ];
 
         return Common::setRuleAuthor($rules, new AuditableRequest());

@@ -6,6 +6,7 @@ use App\Core\Entities\BaseEntity;
 use App\Core\Requests\ListDataRequest;
 use App\Core\Requests\ListSearchDataRequest;
 use App\Core\Requests\ListSearchPageDataRequest;
+use App\Helper\Common;
 use App\Http\Requests\Blog\BlogStoreRequest;
 use App\Http\Requests\Blog\BlogUpdateRequest;
 use App\Models\Blog;
@@ -39,19 +40,9 @@ class BlogRepository extends BaseRepository implements IBlogRepository
                 content LIKE ?)", $this->searchBlogByKeyword($keyword));
         }
 
-        if (is_array($request->filter) && count($request->filter) > 0) {
-            foreach ($request->filter as $key => $value) {
-                switch ($key) {
-                    case "published_date":
-                        if ($value)
-                            $blog = $blog->whereBetween($key, explode("|", $value));
-                        break;
-
-                    default:
-                        if ($value)
-                            $blog = $blog->where($key, $value);
-                        break;
-                }
+        if (is_array($request->filters) && count($request->filters) > 0) {
+            foreach ($request->filters as $key => $value) {
+                $blog = Common::generateQuery($value, $blog);
             }
         }
 
@@ -69,19 +60,9 @@ class BlogRepository extends BaseRepository implements IBlogRepository
             $blog = $blog->whereRaw("(title LIKE ?)", $this->searchBlogByKeyword($keyword));
         }
 
-        if (is_array($request->filter) && count($request->filter) > 0) {
-            foreach ($request->filter as $key => $value) {
-                switch ($key) {
-                    case "published_date":
-                        if ($value)
-                            $blog = $blog->whereBetween($key, explode("|", $value));
-                        break;
-
-                    default:
-                        if ($value)
-                            $blog = $blog->where($key, $value);
-                        break;
-                }
+        if (is_array($request->filters) && count($request->filters) > 0) {
+            foreach ($request->filters as $key => $value) {
+                $blog = Common::generateQuery($value, $blog);
             }
         }
 
