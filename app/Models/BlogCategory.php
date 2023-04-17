@@ -13,7 +13,7 @@ class BlogCategory extends BaseEntity
 
     protected $table = 'blog_categories';
 
-    protected $guarded = ['deleted_at'];
+    protected $guarded = ['deleted_at', 'request_by'];
 
     protected $dates = ['deleted_at'];
 

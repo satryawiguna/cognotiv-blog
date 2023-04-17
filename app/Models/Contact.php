@@ -13,7 +13,7 @@ class Contact extends BaseEntity
 
     protected $table = 'contacts';
 
-    protected $guarded = ['deleted_at'];
+    protected $guarded = ['deleted_at', 'request_by'];
 
     protected $keyType = 'string';
 

@@ -7,7 +7,6 @@ use App\Core\Requests\ListSearchDataRequest;
 use App\Core\Requests\ListSearchPageDataRequest;
 use App\Http\Requests\Blog\BlogStoreRequest;
 use App\Http\Requests\Blog\BlogUpdateRequest;
-use App\Http\Resources\Blog\BlogCategoryResource;
 use App\Http\Resources\Blog\BlogResource;
 use App\Http\Resources\Blog\BlogResourceCollection;
 use App\Services\Contracts\IBlogService;

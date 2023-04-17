@@ -2,23 +2,16 @@
 
 namespace App\Models;
 
+use App\Core\Entities\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
-class Comment extends Model
+class Comment extends BaseEntity
 {
     use HasFactory;
 
-    public $incrementing = false;
+    protected $table = 'comments';
 
-    public static function boot(){
-        parent::boot();
-
-        static::creating(function ($contact) {
-            $contact->id = Str::uuid(36);
-        });
-    }
+    protected $guarded = ['request_by'];
 
     public function commentable()
     {

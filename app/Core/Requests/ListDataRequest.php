@@ -10,14 +10,17 @@ class ListDataRequest extends FormRequest
 
     public string $_sort = "ASC";
 
-    public array $_filter = [];
+    public array $_filters = [];
+
+    public array $_relations = [];
 
     public function rules()
     {
         return [
             'order_by' => ['string'],
             'sort' => ['string', 'regex:(ASC|DESC)'],
-            'filter' => ['array']
+            'filters' => ['array'],
+            'filters.*' => ['array']
         ];
     }
 
@@ -26,7 +29,8 @@ class ListDataRequest extends FormRequest
         $this->merge([
             'order_by' => ($this->has('order_by')) ? $this->input('order_by') : $this->_order_by,
             'sort' => ($this->has('sort')) ? $this->input('sort') : $this->_sort,
-            'filter' => ($this->has('filter')) ? $this->input('filter') : $this->_filter
+            'filters' => ($this->has('filters')) ? $this->input('filters') : $this->_filters,
+            'relations' => ($this->has('relations')) ? $this->input('relations') : $this->_relations,
         ]);
     }
 }

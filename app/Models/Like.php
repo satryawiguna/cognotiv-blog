@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Core\Entities\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Like extends Model
+class Like extends BaseEntity
 {
     use HasFactory;
+
+    protected $table = 'likes';
+
+    protected $guarded = ['request_by'];
 
     public $incrementing = false;
 

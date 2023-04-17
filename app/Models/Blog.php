@@ -11,7 +11,9 @@ class Blog extends BaseEntity
 {
     use HasFactory, SoftDeletes, Sluggable;
 
-    protected $guarded = ['deleted_at'];
+    protected $table = 'blogs';
+
+    protected $guarded = ['deleted_at', 'request_by'];
 
     protected $dates = ['deleted_at'];
 
@@ -36,6 +38,6 @@ class Blog extends BaseEntity
 
     public function comments()
     {
-        return $this->morphMany(Contact::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

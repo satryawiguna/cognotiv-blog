@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('restrict');
 
-            $table->dateTime('published_date');
+            $table->dateTime('published_date')->default(Carbon::now());
             $table->enum('status', ['published', 'pending', 'draft'])->default('draft');
 
             $table->string('title');
