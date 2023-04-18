@@ -8,10 +8,10 @@
     <input type="hidden" name="remember" value="true"/>
     <div className="-space-y-px rounded-md shadow-sm">
       <div>
-        <label htmlFor="email-address" className="sr-only">Email address</label>
-        <input id="email-address" name="email" type="email" autoComplete="email" required=""
+        <label htmlFor="identity" className="sr-only">Username / Password</label>
+        <input id="identity" name="identity" type="text" autoComplete="identity" required=""
                className="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-               placeholder="Email address"/>
+               placeholder="Identity"/>
       </div>
       <div>
         <label htmlFor="password" className="sr-only">Password</label>
@@ -47,14 +47,9 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import {LockClosedIcon} from '@heroicons/vue/20/solid'
 
-export default {
-  components: {
-    LockClosedIcon
-  }
-}
 </script>
 
 <style scoped>
