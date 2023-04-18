@@ -26,4 +26,8 @@ interface IBlogRepository
     public function updateBlog(BlogUpdateRequest $request): BaseEntity|null;
 
     public function deleteBlog(int $id): BaseEntity|null;
+
+    public function likeBlog(int $blogId, string $userId): BaseEntity;
+
+    public function dislikeBlog(int $blogId, string $userId): BaseEntity|null;
 }

@@ -9,9 +9,9 @@ use App\Http\Requests\Comment\CommentUpdateRequest;
 
 interface ICommentService
 {
-    public function storeComment(CommentStoreRequest $request): GenericObjectResponse;
+    public function storeComment(int $blogId, CommentStoreRequest $request): GenericObjectResponse;
 
-    public function updateComment(int $id, CommentUpdateRequest $request): GenericObjectResponse;
+    public function updateComment(int $blogId, int $id, CommentUpdateRequest $request): GenericObjectResponse;
 
-    public function destroyComment(string $id): BasicResponse;
+    public function destroyComment(int $blogId, int $id): BasicResponse;
 }

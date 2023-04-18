@@ -18,9 +18,9 @@ class CommentController extends ApiBaseController
         $this->_commentService = $commentService;
     }
 
-    public function store(CommentStoreRequest $request)
+    public function store(int $blogId, CommentStoreRequest $request)
     {
-        $storeCommentResponse = $this->_commentService->storeComment($request);
+        $storeCommentResponse = $this->_commentService->storeComment($blogId, $request);
 
         if ($storeCommentResponse->isError()) {
             return $this->getErrorLatestJsonResponse($storeCommentResponse);
@@ -29,9 +29,9 @@ class CommentController extends ApiBaseController
         return $this->getObjectJsonResponse($storeCommentResponse, CommentResource::class);
     }
 
-    public function update(int $id, CommentUpdateRequest $request)
+    public function update(int $blogId, int $id, CommentUpdateRequest $request)
     {
-        $updateCommentResponse = $this->_commentService->updateComment($id, $request);
+        $updateCommentResponse = $this->_commentService->updateComment($blogId, $id, $request);
 
         if ($updateCommentResponse->isError()) {
             return $this->getErrorLatestJsonResponse($updateCommentResponse);
@@ -40,9 +40,9 @@ class CommentController extends ApiBaseController
         return $this->getObjectJsonResponse($updateCommentResponse, CommentResource::class);
     }
 
-    public function delete(int $id)
+    public function delete(int $blogId, int $id)
     {
-        $deleteCommentResponse = $this->_commentService->destroyComment($id);
+        $deleteCommentResponse = $this->_commentService->destroyComment($blogId, $id);
 
         if ($deleteCommentResponse->isError()) {
             return $this->getErrorLatestJsonResponse($deleteCommentResponse);

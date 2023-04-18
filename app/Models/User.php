@@ -78,4 +78,9 @@ class User extends BaseAuthEntity implements MustVerifyEmail
     {
         return $this->morphOne(Contact::class, 'contactable');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'user_id', 'id');
+    }
 }

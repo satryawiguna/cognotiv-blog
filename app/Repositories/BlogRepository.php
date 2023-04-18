@@ -123,6 +123,24 @@ class BlogRepository extends BaseRepository implements IBlogRepository
         return $blog;
     }
 
+    public function likeBlog(int $blogId, string $userId): BaseEntity
+    {
+        $blog = $this->_model->find($blogId);
+
+        $blog->likes->attatch($userId);
+
+        return $blog;
+    }
+
+    public function dislikeBlog(int $blogId, string $userId): BaseEntity|null
+    {
+        $blog = $this->_model->find($blogId);
+
+        $blog->likes->detatch($userId);
+
+        return $blog;
+    }
+
     private function searchBlogByKeyword(string $keyword) {
         return [
             'title' => "%" . $keyword . "%",

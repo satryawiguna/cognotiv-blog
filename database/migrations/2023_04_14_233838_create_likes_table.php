@@ -21,6 +21,8 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('restrict');
 
+            $table->unique(['blog_id', 'user_id']);
+
             $table->nullableTimestamps();
         });
     }
