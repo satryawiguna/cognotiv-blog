@@ -1,11 +1,9 @@
 <template>
-
+  <PageComponent title="Blog"></PageComponent>
 </template>
 
-<script>
-export default {
-  name: "ListBlog"
-}
+<script setup>
+import PageComponent from "../../../components/PageComponent.vue"
 </script>
 
 <style scoped>

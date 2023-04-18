@@ -1,11 +1,9 @@
 <template>
-
+  <PageComponent title="Blog Category"></PageComponent>
 </template>
 
-<script>
-export default {
-  name: "BlogCategoryList"
-}
+<script setup>
+import PageComponent from "../../../components/PageComponent.vue"
 </script>
 
 <style scoped>
