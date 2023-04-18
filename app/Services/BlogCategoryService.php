@@ -155,14 +155,14 @@ class BlogCategoryService extends BaseService implements IBlogCategoryService
 
             Log::error("Invalid query on " . __FUNCTION__ . "()", [$ex->getMessage()]);
         } catch (ModelNotFoundException $ex) {
-            $response = $this->setMessageResponse($response,
+            $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::BAD_REQUEST,
                 'Invalid object not found');
 
             Log::error('Invalid object not found on ' . __FUNCTION__ . '()', [$ex->getMessage()]);
         } catch (Exception $ex) {
-            $response = $this->setMessageResponse($response,
+            $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
                 'Something went wrong');
@@ -184,7 +184,7 @@ class BlogCategoryService extends BaseService implements IBlogCategoryService
 
             DB::commit();
 
-            $response = $this->setGenericObjectResponse($response,
+            $this->setGenericObjectResponse($response,
                 $createBlogCategory,
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
@@ -212,7 +212,7 @@ class BlogCategoryService extends BaseService implements IBlogCategoryService
         } catch (Exception $ex) {
             DB::rollBack();
 
-            $response = $this->setMessageResponse($response,
+            $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
                 'Something went wrong');
@@ -338,7 +338,7 @@ class BlogCategoryService extends BaseService implements IBlogCategoryService
 
             Log::error('Bad request on ' . __FUNCTION__ . '()', [$ex->getMessage()]);
         } catch (\Exception $ex) {
-            $response = $this->setMessageResponse($response,
+            $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
                 $ex->getMessage());

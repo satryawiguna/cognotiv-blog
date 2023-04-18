@@ -36,6 +36,11 @@ class Blog extends BaseEntity
         return $this->belongsTo(User::class, 'author', 'id');
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'blog_id', 'id');
+    }
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');

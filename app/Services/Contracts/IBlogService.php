@@ -27,5 +27,7 @@ interface IBlogService
 
     public function updateBlog(int $id, BlogUpdateRequest $request): GenericObjectResponse;
 
-    public function destroyBlog(string $id): BasicResponse;
+    public function destroyBlog(int $id): BasicResponse;
+
+    public function likeAndDislikeBlog(int $blogId): BasicResponse;
 }

@@ -38,8 +38,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
         Route::get('/{id}', [BlogCategoryController::class, "show"])->name('api.blogCategory.show');
         Route::post('/create', [BlogCategoryController::class, "store"])->name('api.blogCategory.create');
-        Route::put('/update/{id}', [BlogCategoryController::class, "update"])->name('api.blogCategory.update');
-        Route::delete('/delete/{id}', [BlogCategoryController::class, "delete"])->name('api.blogCategory.delete');
+        Route::put('/{id}/update', [BlogCategoryController::class, "update"])->name('api.blogCategory.update');
+        Route::delete('/{id}/delete', [BlogCategoryController::class, "delete"])->name('api.blogCategory.delete');
     });
 
     Route::group(['prefix' => '/blog'], function () {
@@ -49,15 +49,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::post('/search/page', [BlogController::class, "allSearchPage"])->name('api.blog.all.search.page');
         });
 
-        Route::group(['prefix' => '/comment'], function () {
-            Route::post('/create', [CommentController::class, "store"])->name('api.blog.comment.create');
-            Route::put('/update/{id}', [CommentController::class, "update"])->name('api.blog.comment.update');
-            Route::delete('/delete/{id}', [CommentController::class, "delete"])->name('api.blog.comment.delete');
-        });
-
         Route::get('/{id}', [BlogController::class, "show"])->name('api.blog.show');
         Route::post('/create', [BlogController::class, "store"])->name('api.blog.create');
-        Route::put('/update/{id}', [BlogController::class, "update"])->name('api.blog.update');
-        Route::delete('/delete/{id}', [BlogController::class, "delete"])->name('api.blog.delete');
+        Route::put('/{id}/update', [BlogController::class, "update"])->name('api.blog.update');
+        Route::delete('/{id}/delete', [BlogController::class, "delete"])->name('api.blog.delete');
+
+        Route::group(['prefix' => '/{blogId}'], function () {
+            Route::post('/comment/create', [CommentController::class, "store"])->name('api.blog.comment.create');
+            Route::group(['prefix' => '/comment'], function () {
+                Route::put('/{id}/update', [CommentController::class, "update"])->name('api.blog.comment.update');
+                Route::delete('/{id}/delete', [CommentController::class, "delete"])->name('api.blog.comment.delete');
+            });
+
+            Route::post('/like-and-dislike', [BlogController::class, "likeAndDislike"])->name('api.blog.likeAndDislike');
+        });
     });
 });

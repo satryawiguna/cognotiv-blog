@@ -64,9 +64,9 @@ class BlogCategoryRepository extends BaseRepository implements IBlogCategoryRepo
     public function createBlogCategory(BlogCategoryStoreRequest $request): BaseEntity
     {
         $blogCategory = $this->_model->fill($request->all());
-dd($blogCategory);
+
         $this->setAuditableInformationFromRequest($blogCategory, $request);
-dd($blogCategory);
+
         $blogCategory->save();
 
         return $blogCategory->fresh();

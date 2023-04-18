@@ -96,4 +96,15 @@ class BlogController extends ApiBaseController
 
         return $this->getSuccessLatestJsonResponse($deleteBlogResponse);
     }
+
+    public function likeAndDislike(int $blogId)
+    {
+        $likeAndDislikeBlogResponse = $this->_blogService->likeAndDislikeBlog($blogId);
+
+        if ($likeAndDislikeBlogResponse->isError()) {
+            return $this->getErrorLatestJsonResponse($likeAndDislikeBlogResponse);
+        }
+
+        return $this->getSuccessLatestJsonResponse($likeAndDislikeBlogResponse);
+    }
 }

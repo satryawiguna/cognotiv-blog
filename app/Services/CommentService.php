@@ -7,6 +7,7 @@ use App\Core\Responses\GenericObjectResponse;
 use App\Core\Types\HttpResponseType;
 use App\Http\Requests\Comment\CommentStoreRequest;
 use App\Http\Requests\Comment\CommentUpdateRequest;
+use App\Repositories\Contracts\IBlogRepository;
 use App\Repositories\Contracts\ICommentRepository;
 use App\Services\Contracts\ICommentService;
 use Exception;
@@ -20,23 +21,32 @@ class CommentService extends BaseService implements ICommentService
 {
     private readonly ICommentRepository $_commentRepository;
 
-    public function __construct(ICommentRepository $commentRepository)
+    private readonly IBlogRepository $_blogRepository;
+
+    public function __construct(ICommentRepository $commentRepository, IBlogRepository $blogRepository)
     {
         $this->_commentRepository = $commentRepository;
+        $this->_blogRepository = $blogRepository;
     }
 
-    public function storeComment(CommentStoreRequest $request): GenericObjectResponse
+    public function storeComment(int $blogId, CommentStoreRequest $request): GenericObjectResponse
     {
         $response = new GenericObjectResponse();
 
         try {
             DB::beginTransaction();
 
+            $blog = $this->_blogRepository->findById($blogId);
+
+            if ($blog->id != $request->commentable_id) {
+                throw new BadRequestException('Path parameter blog id: {' . $blog->id . '} was not match with the request');
+            }
+
             $createComment = $this->_commentRepository->createComment($request);
 
             DB::commit();
 
-            $response = $this->setGenericObjectResponse($response,
+            $this->setGenericObjectResponse($response,
                 $createComment,
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
@@ -64,7 +74,7 @@ class CommentService extends BaseService implements ICommentService
         } catch (Exception $ex) {
             DB::rollBack();
 
-            $response = $this->setMessageResponse($response,
+            $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
                 'Something went wrong');
@@ -75,7 +85,7 @@ class CommentService extends BaseService implements ICommentService
         return $response;
     }
 
-    public function updateComment(int $id, CommentUpdateRequest $request): GenericObjectResponse
+    public function updateComment(int $blogId, int $id, CommentUpdateRequest $request): GenericObjectResponse
     {
         $response = new GenericObjectResponse();
 
@@ -87,6 +97,10 @@ class CommentService extends BaseService implements ICommentService
             }
 
             $comment = $this->_commentRepository->findById($id);
+
+            if ($blogId != $comment->commentable_id) {
+                throw new BadRequestException('Path parameter blog id: {' . $blogId . '} was not match with the request');
+            }
 
             if (!$comment) {
                 throw new ModelNotFoundException('Blog category by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
@@ -143,12 +157,16 @@ class CommentService extends BaseService implements ICommentService
         return $response;
     }
 
-    public function destroyComment(string $id): BasicResponse
+    public function destroyComment(int $blogId, int $id): BasicResponse
     {
         $response = new BasicResponse();
 
         try {
             $comment = $this->_commentRepository->findById($id);
+
+            if ($blogId != $comment->commentable_id) {
+                throw new BadRequestException('Path parameter blog id: {' . $blogId . '} was not match with the request');
+            }
 
             if (!$comment) {
                 throw new ModelNotFoundException('Blog category by id: {' . $id . '} was not found on ' . __FUNCTION__ . '()');
@@ -190,7 +208,7 @@ class CommentService extends BaseService implements ICommentService
 
             Log::error('Bad request on ' . __FUNCTION__ . '()', [$ex->getMessage()]);
         } catch (\Exception $ex) {
-            $response = $this->setMessageResponse($response,
+            $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::INTERNAL_SERVER_ERROR,
                 $ex->getMessage());
