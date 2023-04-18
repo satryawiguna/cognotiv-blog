@@ -99,7 +99,7 @@ const store = useStore()
 
 const navigation = [
   {name: 'Dashboard', to: {name: 'Dashboard'}},
-  {name: 'Blog Category', to: {name: 'Blog Category'}},
+  {name: 'Blog Category', to: {name: 'BlogCategory'}},
   {name: 'Blog', to: {name: 'Blog'}}
 ]
 
