@@ -13,3 +13,9 @@ yarn-error.log
 /.idea
 /.vscode
 /vue/node_modules
+/.phpunit.cache
+/public/build
+.env.production
+auth.json
+/.fleet
+

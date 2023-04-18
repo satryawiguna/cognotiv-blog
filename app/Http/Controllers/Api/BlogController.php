@@ -2,64 +2,109 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Core\Requests\ListDataRequest;
+use App\Core\Requests\ListSearchDataRequest;
+use App\Core\Requests\ListSearchPageDataRequest;
+use App\Http\Requests\Blog\BlogStoreRequest;
+use App\Http\Requests\Blog\BlogUpdateRequest;
+use App\Http\Resources\Blog\BlogResource;
+use App\Http\Resources\Blog\BlogResourceCollection;
+use App\Services\Contracts\IBlogService;
 
-class BlogController extends Controller
+class BlogController extends ApiBaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public IBlogService $_blogService;
+
+    public function __construct(IBlogService $blogService)
     {
-        //
+        $this->_blogService = $blogService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function all(ListDataRequest $request)
     {
-        //
+        $blogs = $this->_blogService->getAllBlogs($request);
+
+        if ($blogs->isError()) {
+            return $this->getErrorLatestJsonResponse($blogs);
+        }
+
+        return $this->getListJsonResponse($blogs, BlogResourceCollection::class);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function allSearch(ListSearchDataRequest $request)
     {
-        //
+        $blogs = $this->_blogService->getAllSearchBlogs($request);
+
+        if ($blogs->isError()) {
+            return $this->getErrorLatestJsonResponse($blogs);
+        }
+
+        return $this->getListSearchJsonResponse($blogs, BlogResourceCollection::class);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function allSearchPage(ListSearchPageDataRequest $request)
     {
-        //
+        $blogs = $this->_blogService->getAllSearchPageBlogs($request);
+
+        if ($blogs->isError()) {
+            return $this->getErrorLatestJsonResponse($blogs);
+        }
+
+        return $this->getListSearchPageJsonResponse($blogs, BlogResourceCollection::class);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function show(int $id)
     {
-        //
+        $blog = $this->_blogService->getBlog($id);
+
+        if ($blog->isError()) {
+            return $this->getErrorLatestJsonResponse($blog);
+        }
+
+        return $this->getObjectJsonResponse($blog, BlogResource::class);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function store(BlogStoreRequest $request)
     {
-        //
+        $storeBlogResponse = $this->_blogService->storeBlog($request);
+
+        if ($storeBlogResponse->isError()) {
+            return $this->getErrorLatestJsonResponse($storeBlogResponse);
+        }
+
+        return $this->getObjectJsonResponse($storeBlogResponse, BlogResource::class);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function update(BlogUpdateRequest $request, int $id)
     {
-        //
+        $updateBlogResponse = $this->_blogService->updateBlog($id, $request);
+
+        if ($updateBlogResponse->isError()) {
+            return $this->getErrorLatestJsonResponse($updateBlogResponse);
+        }
+
+        return $this->getObjectJsonResponse($updateBlogResponse, BlogResource::class);
+    }
+
+    public function delete(int $id)
+    {
+        $deleteBlogResponse = $this->_blogService->destroyBlog($id);
+
+        if ($deleteBlogResponse->isError()) {
+            return $this->getErrorLatestJsonResponse($deleteBlogResponse);
+        }
+
+        return $this->getSuccessLatestJsonResponse($deleteBlogResponse);
+    }
+
+    public function likeAndDislike(int $blogId)
+    {
+        $likeAndDislikeBlogResponse = $this->_blogService->likeAndDislikeBlog($blogId);
+
+        if ($likeAndDislikeBlogResponse->isError()) {
+            return $this->getErrorLatestJsonResponse($likeAndDislikeBlogResponse);
+        }
+
+        return $this->getSuccessLatestJsonResponse($likeAndDislikeBlogResponse);
     }
 }
