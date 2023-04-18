@@ -1,10 +1,10 @@
 <template>
-Blog
+Home
 </template>
 
 <script>
 export default {
-  name: "Blog"
+  name: "Home"
 }
 </script>
 
