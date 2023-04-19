@@ -45,13 +45,7 @@ const store = createStore({
           return response
         })
     },
-    getBlogCategories({commit}, {params = null} = {
-      "search": null,
-      "order_by": "id",
-      "sort": "DESC",
-      "per_page": 10,
-      "page": 1
-    }) {
+    getBlogCategories({commit}, params) {
       commit('setBlogCategoriesLoading', true)
 
       return axiosClient.post('/blog-category/all/search/page', params)

@@ -105,8 +105,8 @@ class BlogCategoryService extends BaseService implements IBlogCategoryService
 
             $this->setGenericListSearchPageResponse($response,
                 $blogCategories->getCollection(),
-                $blogCategories->count(),
-                ["perPage" => $blogCategories->perPage(), "currentPage" => $blogCategories->currentPage()],
+                $blogCategories->total(),
+                ["per_page" => $blogCategories->perPage(), "current_page" => $blogCategories->currentPage()],
                 'SUCCESS',
                 HttpResponseType::SUCCESS);
 
