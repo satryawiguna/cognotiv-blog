@@ -17,6 +17,16 @@ const store = createStore({
       data: {},
       loading: false
     },
+    blogs: {
+      meta: null,
+      data: [],
+      loading: false
+    },
+    currentBlog: {
+      meta: null,
+      data: {},
+      loading: false
+    },
   },
   getters: {},
   actions: {
@@ -45,6 +55,7 @@ const store = createStore({
           return response
         })
     },
+
     getBlogCategories({commit}, params) {
       commit('setBlogCategoriesLoading', true)
 
@@ -71,7 +82,7 @@ const store = createStore({
           throw err;
         });
     },
-    saveBlogCategory({ commit, dispatch }, blogCategory) {
+    saveBlogCategory({commit, dispatch}, blogCategory) {
       let response;
       if (blogCategory.id) {
         response = axiosClient
@@ -89,9 +100,60 @@ const store = createStore({
 
       return response;
     },
-    deleteBlogCategory({ dispatch }, id) {
+    deleteBlogCategory({dispatch}, id) {
       return axiosClient.delete(`/blog-category/${id}/delete`).then((res) => {
         dispatch('getBlogCategories')
+        return res;
+      });
+    },
+
+    getBlogs({commit}, params) {
+      commit('setBlogsLoading', true)
+
+      return axiosClient.post('/blog/all/search/page', params)
+        .then((res) => {
+          commit('setBlogsLoading', false)
+          commit("setBlogs", res.data)
+
+          return res
+        })
+    },
+    getBlog({commit}, id) {
+      commit("setBlogsLoading", true);
+
+      return axiosClient
+        .get(`/blog/${id}`)
+        .then((res) => {
+          commit("setCurrentBlog", res.data);
+          commit("setCurrentBlogLoading", false);
+          return res;
+        })
+        .catch((err) => {
+          commit("setCurrentBlogLoading", false);
+          throw err;
+        });
+    },
+    saveBlog({commit, dispatch}, blog) {
+      let response;
+      if (blog.id) {
+        response = axiosClient
+          .put(`/blog/${blog.id}/update`, blog)
+          .then((res) => {
+            commit('setCurrentBlog', res.data)
+            return res;
+          });
+      } else {
+        response = axiosClient.post("/blog/create", blog).then((res) => {
+          commit('setCurrentBlog', res.data)
+          return res;
+        });
+      }
+
+      return response;
+    },
+    deleteBlog({dispatch}, id) {
+      return axiosClient.delete(`/blog/${id}/delete`).then((res) => {
+        dispatch('getBlogs')
         return res;
       });
     },
@@ -109,6 +171,7 @@ const store = createStore({
       state.user.token = token
       sessionStorage.setItem('TOKEN', token)
     },
+
     setBlogCategoriesLoading: (state, loading) => {
       state.blogCategories.loading = loading;
     },
@@ -121,6 +184,20 @@ const store = createStore({
     },
     setCurrentBlogCategory: (state, blogCategory) => {
       state.currentBlogCategory.data = blogCategory.data;
+    },
+
+    setBlogsLoading: (state, loading) => {
+      state.blogs.loading = loading;
+    },
+    setBlogs: (state, blogs) => {
+      state.blogs.meta = blogs.meta;
+      state.blogs.data = blogs.datas;
+    },
+    setCurrentBlogLoading: (state, loading) => {
+      state.currentBlog.loading = loading;
+    },
+    setCurrentBlog: (state, blog) => {
+      state.currentBlog.data = blog.data;
     },
   },
   modules: {}
