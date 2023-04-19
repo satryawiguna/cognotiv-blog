@@ -7,6 +7,7 @@ use App\Http\Resources\Comment\CommentResourceCollection;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class BlogResource extends JsonResource
 {
@@ -19,9 +20,11 @@ class BlogResource extends JsonResource
     {
         $blog = [
             'id' => $this->id,
-            'category' => $this->blogCategory->title,
-            'author' => $this->user->contact->nick_name,
-            'publish_date' => $this->published_date,
+            'category_title' => $this->blogCategory->title,
+            'category' =>  $this->blogCategory->id,
+            'author_name' => $this->user->contact->nick_name,
+            'author' => $this->user->id,
+            'published_date' => Carbon::parse($this->published_date)->format("Y-m-d"),
             'status' => $this->status,
             'title' => $this->title,
             'slug' => $this->slug,
@@ -30,6 +33,12 @@ class BlogResource extends JsonResource
 
         if (is_array($request->relations) && count($request->relations) > 0) {
             if (in_array('comments', $request->relations)) {
+                $blog['comments'] = new CommentResourceCollection($this->comments);
+            }
+        } else {
+            $relations = explode(',', $request->relations);
+
+            if (in_array('comments', $relations)) {
                 $blog['comments'] = new CommentResourceCollection($this->comments);
             }
         }

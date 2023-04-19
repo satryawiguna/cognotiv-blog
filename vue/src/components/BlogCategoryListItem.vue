@@ -1,9 +1,9 @@
 <template>
-  <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-    <td class="py-3 px-3 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{blogCategory.id}}</td>
-    <td class="py-3 px-3 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{blogCategory.title}}</td>
-    <td class="py-3 px-3 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{{blogCategory.slug}}</td>
-    <td class="py-3 px-3 text-sm font-medium text-right whitespace-nowrap">
+  <tr class="border-b dark:border-neutral-300">
+    <td class="whitespace-nowrap px-6 py-4 font-medium">{{blogCategory.id}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{blogCategory.title}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{blogCategory.slug}}</td>
+    <td class="whitespace-nowrap px-6 py-4">
       <TButton :to="{ name: 'EditBlogCategory', params: { id: blogCategory.id }}" link>
         Edit
       </TButton>

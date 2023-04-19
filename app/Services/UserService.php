@@ -83,6 +83,7 @@ class UserService extends BaseService implements IUserService
 
             $this->setGenericObjectResponse($response,
                 [
+                    'id' => $user->id,
                     'email' => $user->email,
                     'role' => $user->role,
                     'access_token' => $token,
