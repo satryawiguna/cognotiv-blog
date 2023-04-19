@@ -12,7 +12,7 @@ class ListSearchPageDataRequest extends ListSearchDataRequest
     {
         return array_merge([
             'page' => ['integer', 'min:1'],
-            'per_page' => ['integer', 'min:5']
+            'per_page' => ['integer', 'min:2']
         ], parent::rules());
     }
 
