@@ -28,7 +28,7 @@
               name="title"
               id="title"
               v-model="model.title"
-              autocomplete="survey_title"
+              autocomplete="blog_category_title"
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             />
           </div>
@@ -68,7 +68,6 @@ watch(
   (newVal, oldVal) => {
     model.value = {
       ...JSON.parse(JSON.stringify(newVal)),
-      status: !!newVal.status,
     };
   }
 );
@@ -84,16 +83,12 @@ function saveBlogCategory() {
     action = "updated";
   }
 
-  store.dispatch("saveBlogCategory", { ...model.value }).then(({ data }) => {
-    store.commit("notify", {
-      type: "success",
-      message: "Blog category was successfully " + action,
+  store.dispatch("saveBlogCategory", { ...model.value })
+    .then(({ data }) => {
+      router.push({
+        name: "BlogCategory"
+      });
     });
-
-    router.push({
-      name: "BlogCategory"
-    });
-  });
 }
 
 function deleteBlogCategory() {

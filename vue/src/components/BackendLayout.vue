@@ -25,7 +25,7 @@
                   <MenuButton
                     class="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" :src="user.imageUrl" alt=""/>
+                    <span class="text-white p-2">{{ user.email }}</span>
                   </MenuButton>
                 </div>
                 <transition enter-active-class="transition ease-out duration-100"
@@ -66,11 +66,7 @@
         </div>
         <div class="border-t border-gray-700 pb-3 pt-4">
           <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt=""/>
-            </div>
             <div class="ml-3">
-              <div class="text-base font-medium leading-none text-white">{{ user.name }}</div>
               <div class="text-sm font-medium leading-none text-gray-400">{{ user.email }}</div>
             </div>
           </div>
@@ -82,13 +78,13 @@
           </div>
         </div>
       </DisclosurePanel>
-    </Disclosure>
+      </Disclosure>
 
-    <router-view></router-view>
+      <router-view></router-view>
   </div>
 </template>
 
-<script>
+<script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {Bars3Icon, BellIcon, XMarkIcon} from '@heroicons/vue/24/outline'
 import {useStore} from 'vuex'
@@ -96,6 +92,7 @@ import {computed} from 'vue'
 import {useRouter} from 'vue-router'
 
 const store = useStore()
+const router = useRouter()
 
 const navigation = [
   {name: 'Dashboard', to: {name: 'Dashboard'}},
@@ -103,29 +100,15 @@ const navigation = [
   {name: 'Blog', to: {name: 'Blog'}}
 ]
 
-export default {
-  components: {
-    Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Bars3Icon, BellIcon, XMarkIcon
-  },
-  setup() {
-    const store = useStore()
-    const router = useRouter()
+const user = computed(() => store.state.user.data)
 
-    function logout() {
-      store.dispatch('logout')
-        .then(() => {
-          router.push({
-            name: 'Login'
-          })
-        })
-
-    }
-
-    return {
-      user: computed(() => store.state.user.data),
-      navigation,
-      logout
-    }
-  }
+function logout() {
+  store.dispatch('logout')
+    .then(() => {
+      router.push({
+        name: 'Login'
+      })
+    })
 }
+
 </script>
