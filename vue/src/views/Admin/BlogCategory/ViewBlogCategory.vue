@@ -68,7 +68,6 @@ watch(
   (newVal, oldVal) => {
     model.value = {
       ...JSON.parse(JSON.stringify(newVal)),
-      status: !!newVal.status,
     };
   }
 );
@@ -84,16 +83,12 @@ function saveBlogCategory() {
     action = "updated";
   }
 
-  store.dispatch("saveBlogCategory", { ...model.value }).then(({ data }) => {
-    store.commit("notify", {
-      type: "success",
-      message: "Blog category was successfully " + action,
+  store.dispatch("saveBlogCategory", { ...model.value })
+    .then(({ data }) => {
+      router.push({
+        name: "BlogCategory"
+      });
     });
-
-    router.push({
-      name: "BlogCategory"
-    });
-  });
 }
 
 function deleteBlogCategory() {

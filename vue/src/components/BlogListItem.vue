@@ -19,10 +19,9 @@
         Edit
       </TButton>
       <div class="flex items-center">
-        <TButton :href="`/blog/${blog.slug}`" link target="_blank">
+        <TButton :to="`/admin/blog/${blog.id}`" link>
           Preview
         </TButton>
-
         <TButton v-if="blog.id" @click="emit('delete', blog)" link color="red">
           Delete
         </TButton>

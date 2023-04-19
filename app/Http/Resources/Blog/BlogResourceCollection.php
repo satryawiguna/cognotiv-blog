@@ -23,7 +23,7 @@ class BlogResourceCollection extends ResourceCollection
                 'category' => ($value->blogCategory) ? $value->blogCategory->title : null,
                 'author_id' => ($value->user) ? $value->user->id : null,
                 'author' => ($value->user && $value->user->contact) ? $value->user->contact->nick_name : null,
-                'publish_date' => $value->published_date,
+                'published_date' => $value->published_date,
                 'status' => $value->status,
                 'title' => $value->title,
                 'slug' => $value->slug,

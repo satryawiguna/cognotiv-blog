@@ -4,7 +4,7 @@ import axiosClient from "../axios.js";
 const store = createStore({
   state: {
     user: {
-      data: {},
+      data: JSON.parse(sessionStorage.getItem('USER')),
       token: sessionStorage.getItem('TOKEN')
     },
     blogCategories: {
@@ -40,6 +40,7 @@ const store = createStore({
       return axiosClient.post('/auth/login', user)
         .then(({data}) => {
           commit('setUser', {
+            id: data.data.id,
             email: data.data.email,
             role: data.data.role
           })
@@ -64,6 +65,16 @@ const store = createStore({
           commit('setBlogCategoriesLoading', false)
           commit("setBlogCategories", res.data)
 
+          return res
+        })
+    },
+    getAllBlogCategories({commit}, params) {
+      commit('setBlogCategoriesLoading', true)
+
+      return axiosClient.get('/blog-category/all')
+        .then((res) => {
+          commit('setBlogCategoriesLoading', false)
+          commit("setBlogCategories", res.data)
           return res
         })
     },
@@ -118,11 +129,16 @@ const store = createStore({
           return res
         })
     },
-    getBlog({commit}, id) {
+    getBlog({commit}, request) {
       commit("setBlogsLoading", true);
 
+      let suffixUrl = '';
+
+      if (request.hasOwnProperty('relations'))
+        suffixUrl = `?relations=${request.relations}`
+
       return axiosClient
-        .get(`/blog/${id}`)
+        .get(`/blog/${request.id}` + suffixUrl)
         .then((res) => {
           commit("setCurrentBlog", res.data);
           commit("setCurrentBlogLoading", false);
@@ -157,15 +173,41 @@ const store = createStore({
         return res;
       });
     },
+    saveComment({commit, dispatch}, {blogId, comment}) {
+      let response;
+      if (comment.id) {
+        response = axiosClient
+          .put(`/blog/${blogId}/comment/${comment.id}/update`, comment)
+          .then((res) => {
+            commit('setCurrentComment', res.data)
+            return res;
+          });
+      } else {
+        response = axiosClient.post(`/blog/${blogId}/comment/create`, comment).then((res) => {
+          commit('setCurrentComment', res.data)
+          return res;
+        });
+      }
+
+      return response;
+    },
+    deleteComment({dispatch}, id) {
+      return axiosClient.delete(`/blog/${blogId}/comment/${id}/delete`).then((res) => {
+        dispatch('getcomments')
+        return res;
+      });
+    },
   },
   mutations: {
     logout: state => {
       state.user.data = {}
       state.user.token = null
+      sessionStorage.removeItem('USER')
       sessionStorage.removeItem('TOKEN')
     },
     setUser: (state, user) => {
       state.user.data = user
+      sessionStorage.setItem('USER', JSON.stringify(user))
     },
     setToken: (state, token) => {
       state.user.token = token
@@ -198,6 +240,10 @@ const store = createStore({
     },
     setCurrentBlog: (state, blog) => {
       state.currentBlog.data = blog.data;
+    },
+
+    setCurrentComment: (state, comment) => {
+      state.currentComment.data = comment.data;
     },
   },
   modules: {}

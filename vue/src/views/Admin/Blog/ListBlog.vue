@@ -12,7 +12,7 @@
     <div v-else-if="blogs.data.length">
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
         <BlogListItem
-          v-for="(blog, ind) in blogs.data"
+          v-for="blog in blogs.data"
           :key="blog.id"
           :blog="blog"
           @delete="deleteBlog(blog)"

@@ -10,16 +10,16 @@
     </template>
     <div v-if="blogCategories.loading" class="flex justify-center">Loading...</div>
     <div v-else-if="blogCategories.data.length">
-      <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-        <thead class="bg-gray-100 dark:bg-gray-700">
+      <table class="min-w-full text-left text-sm font-light">
+        <thead class="border-b font-medium dark:border-neutral-500">
           <tr>
-            <th scope="col" class="py-3 px-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">ID</th>
-            <th scope="col" class="py-3 px-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Title</th>
-            <th scope="col" class="py-3 px-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">slug</th>
-            <th scope="col" class="py-3 px-3 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">Actions</th>
+            <th scope="col" class="px-6 py-4">ID</th>
+            <th scope="col" class="px-6 py-4">Title</th>
+            <th scope="col" class="px-6 py-4">slug</th>
+            <th scope="col" class="px-6 py-4">Actions</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+        <tbody>
           <BlogCategoryListItem
             v-for="(blogCategory) in blogCategories.data"
             :key="blogCategory.id"
